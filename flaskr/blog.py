@@ -11,32 +11,6 @@ from flaskr.db import get_db
 
 bp = Blueprint('blog', __name__)
 
-# @bp.route('/')
-# def index():
-#     db = get_db()
-#     # posts = db.execute(
-#     #     'SELECT p.id, title, body, created, author_id, username'
-#     #     ' FROM post p JOIN user u ON p.author_id = u.id'
-#     #     ' ORDER BY created DESC'
-#     # ).fetchall()
-#     posts = db.execute(
-#         'SELECT id, title, body, created'
-#         ' FROM post'
-#         ' ORDER BY created DESC'
-#     ).fetchall()
-    
-#     posts_list_without_index = []
-#     for post in posts:
-#         posts_list_without_index.append(
-#             dict(
-#                 id = post['id'],
-#                 title = post["title"],
-#                 body = post["body"],
-#                 created_at = post["created"]
-#                 )
-#             )
-#     return jsonify(posts_list_without_index)
-
 
 @bp.route('/blog', methods = ('GET','POST'))
 def index_and_create():
@@ -81,9 +55,8 @@ def index_and_create():
                 created_at = post["created"]
                 )
             )
+        
     return jsonify(posts_list_without_index)
-            
-    # return redirect(url_for('blog.index'))
         
 
 
@@ -115,7 +88,6 @@ def update_and_delete(id):
             }
             return jsonify(message)
     
-    # DELETEの時、content-Typeに、「charset=utf-8」と設定しなければいけない。
     if request.method == 'DELETE':
         db = get_db()
         db.execute('DELETE FROM post WHERE id = ?', (id,))
@@ -126,3 +98,5 @@ def update_and_delete(id):
         return jsonify(message)
     
     return redirect(url_for('blog.index'))
+
+
